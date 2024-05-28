@@ -83,10 +83,10 @@ class TestFileStorage(unittest.TestCase):
         """Test that all returns all rows when no class is passed"""
         state_data = {"name": "Enugu"}
         new_state = State(**state_data)
-        models.storage.new(new_state)
-        models.storage.save()
+        FileStorage.new(new_state)
+        FileStorage.save()
 
-        session = models.storage._FileStorage__objects
+        session = FileStorage._FileStorage__objects
         all_obj = session.query(State).all()
         self.assertTrue(len(all_obj) > 0)
 
@@ -129,7 +129,7 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """Test method for obtaining an instance dbstorage"""
-        storage = models.storage
+        storage = FileStorage
         storage.reload()
 
         state_data = {"name": "Casablanca"}
@@ -143,7 +143,7 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
         """Test method for obtaining an instance dbstorage"""
-        storage = models.storage
+        storage = FileStorage
         storage.reload()
 
         state_data = {"name": "Abuja"}
@@ -151,7 +151,7 @@ class TestFileStorage(unittest.TestCase):
         storage.new(new_state)
         city_data = {"name": "Asokoro", "state": new_state}
         city_instance = City(**city_data)
-        models.storage.new(city_instance)
+        FileStorage.new(city_instance)
         storage.save()
         state_occur = storage.count(State)
         self.assertEqual(state_occur, len(storage.all(State)))

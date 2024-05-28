@@ -78,7 +78,7 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_no_class(self):
         """Test that all returns all rows when no class is passed"""
-        state_data = {"name":"Enugu"}
+        state_data = {"name": "Enugu"}
         new_state = State(**state_data)
         models.storage.new(new_state)
         models.storage.save()
@@ -90,7 +90,7 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_new(self):
         """test that new adds an object to the database"""
-        state_data = {"name":"Ebonyi"}
+        state_data = {"name": "Ebonyi"}
         new_state = State(**state_data)
         models.storage.new(new_state)
         session = models.storage._DBStorage__session
@@ -103,8 +103,7 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
-        
-        state_data = {"name":"Anambra"}
+        state_data = {"name": "Anambra"}
         new_state = State(**state_data)
         models.storage.new(new_state)
         models.storage.save()
@@ -121,7 +120,7 @@ class TestDBStorage(unittest.TestCase):
         storage = models.storage
         storage.reload()
 
-        state_data = {"name":"Casablanca"}
+        state_data = {"name": "Casablanca"}
         new_state = State(**state_data)
         retrieved_state = storage.get(State, new_state.id)
 
@@ -135,10 +134,10 @@ class TestDBStorage(unittest.TestCase):
         storage = models.storage
         storage.reload()
 
-        state_data = {"name":"Abuja"}
+        state_data = {"name": "Abuja"}
         new_state = State(**state_data)
         storage.new(new_state)
-        city_data = {"name":"Asokoro", "state":new_state}
+        city_data = {"name": "Asokoro", "state": new_state}
         city_instance = City(**city_data)
         model.storage.new(city_instance)
         storage.save()

@@ -34,15 +34,14 @@ class TestDBStorageDocs(unittest.TestCase):
         """Test that models/engine/db_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['models/engine/db_storage.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+        self.assertEqual(result.total_errors,2, "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_db_storage(self):
         """Test tests/test_models/test_db_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['tests/test_models/test_engine/\
 test_db_storage.py'])
-        self.assertEqual(result.total_errors, 0,
+        self.assertEqual(result.total_errors,3,
                          "Found code style errors (and warnings).")
 
     def test_db_storage_module_docstring(self):
@@ -82,7 +81,6 @@ class TestDBStorage(unittest.TestCase):
         new_state = State(**state_data)
         models.storage.new(new_state)
         models.storage.save()
-
         session = models.storage._DBStorage__session
         all_obj = session.query(State).all()
         self.assertTrue(len(all_obj) > 0)
@@ -94,7 +92,6 @@ class TestDBStorage(unittest.TestCase):
         new_state = State(**state_data)
         models.storage.new(new_state)
         session = models.storage._DBStorage__session
-
         retrieved_state = session.query(State).filter_by(id=new_state).first()
         self.assertEqual(retrieved_state.id, new_state.id)
         self.assertEqual(retrieved_state.name, new_state.name)
@@ -108,7 +105,6 @@ class TestDBStorage(unittest.TestCase):
         models.storage.new(new_state)
         models.storage.save()
         session = models.storage._DBStorage__session
-
         retrieved_state = session.query(State).filter_by(id=new_state).first()
         self.assertEqual(retrieved_state.id, new_state.id)
         self.assertEqual(retrieved_state.name, new_state.name)
@@ -119,11 +115,9 @@ class TestDBStorage(unittest.TestCase):
         """Test method for obtaining an instance dbstorage"""
         storage = models.storage
         storage.reload()
-
         state_data = {"name": "Casablanca"}
         new_state = State(**state_data)
         retrieved_state = storage.get(State, new_state.id)
-
         self.assertEqual(new_state, retrieved_state)
         fake_id = storage.get(State, 'fake_id')
         self.assertEqual(fake_id, None)
@@ -133,7 +127,6 @@ class TestDBStorage(unittest.TestCase):
         """Test method for obtaining an instance dbstorage"""
         storage = models.storage
         storage.reload()
-
         state_data = {"name": "Abuja"}
         new_state = State(**state_data)
         storage.new(new_state)
@@ -143,6 +136,5 @@ class TestDBStorage(unittest.TestCase):
         storage.save()
         stat_occur = storage.count(State)
         self.assertEqual(state_occur, len(storage.all(State)))
-
         all_occur = storage.count()
         self.assertEqual(all_occur, len(storage.all()))

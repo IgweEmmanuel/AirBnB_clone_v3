@@ -78,6 +78,18 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(new_dict), dict)
         self.assertIs(new_dict, storage._FileStorage__objects)
 
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
+    def test_all_no_class(self):
+        """Test that all returns all rows when no class is passed"""
+        state_data = {"name": "Enugu"}
+        new_state = State(**state_data)
+        models.storage.new(new_state)
+        models.storage.save()
+
+        session = models.storage._FileStorage__objects
+        all_obj = session.query(State).all()
+        self.assertTrue(len(all_obj) > 0)
+
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
@@ -113,3 +125,36 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test method for obtaining an instance dbstorage"""
+        storage = models.storage
+        storage.reload()
+
+        state_data = {"name": "Casablanca"}
+        new_state = State(**state_data)
+        retrieved_state = storage.get(State, new_state.id)
+
+        self.assertEqual(new_state, retrieved_state)
+        fake_id = storage.get(State, 'fake_id')
+        self.assertEqual(fake_id, None)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        """Test method for obtaining an instance dbstorage"""
+        storage = models.storage
+        storage.reload()
+
+        state_data = {"name": "Abuja"}
+        new_state = State(**state_data)
+        storage.new(new_state)
+        city_data = {"name": "Asokoro", "state": new_state}
+        city_instance = City(**city_data)
+        models.storage.new(city_instance)
+        storage.save()
+        state_occur = storage.count(State)
+        self.assertEqual(state_occur, len(storage.all(State)))
+
+        all_occur = storage.count()
+        self.assertEqual(state_occur, len(storage.all()))

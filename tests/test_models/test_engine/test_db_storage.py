@@ -114,7 +114,7 @@ class TestDBStorage(unittest.TestCase):
         self.assertEqual(retrieved_state.name, new_state.name)
         self.assertIsNone(retrieved_state)
 
-        @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """Test method for obtaining an instance dbstorage"""
         storage = models.storage
@@ -126,9 +126,9 @@ class TestDBStorage(unittest.TestCase):
 
         self.assertEqual(new_state, retrieved_state)
         fake_id = storage.get(State, 'fake_id')
-        assertEqual(fake_id, None)
+        self.assertEqual(fake_id, None)
 
-        @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
         """Test method for obtaining an instance dbstorage"""
         storage = models.storage

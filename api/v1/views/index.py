@@ -28,3 +28,8 @@ def count():
     for cls in classes:
         count_dict[cls] = storage.count(classes[cls])
     return jsonify(count_dict)
+
+
+if __name__ == "__main__":
+    # Run the development server on port 5000
+    app.run(host='0.0.0.0', port=5000, debug=True)
